@@ -23,8 +23,8 @@ class SyncBlogsBiJob
              blogs.site_session_id, blogs.visitor_id, blogs.visitor_cookie,
              gender, dob, city, blogs.state, country, activity_type_id, blogs.weight, blogs.record_type, blogs.item_pseudo_model,
              blogs.referrer_type, blogs.referrer_name, blogs.blog, shopping_categories.shopping_category
-FROM
-     (SELECT log_act.log_id, it.site_item_id, log_act.site_id, log_act.created_at_log_activity, it.published_up, it.published_down,
+    FROM
+     ((SELECT log_act.log_id, it.site_item_id, log_act.site_id, log_act.created_at_log_activity, it.published_up, it.published_down,
              scroll_percentage, latest_scroll_at, session_cookie, log_act.site_session_id, log_act.visitor_id, v.visitor_cookie,
              gender, dob, city, v.state, country, activity_type_id, act.weight, record_type, it.pseudo_model AS item_pseudo_model,
              http_ref.referrer_name, http_ref.referrer_type, it.alias AS blog
@@ -55,7 +55,7 @@ FROM
                          WHERE tags.tag_category_id=2
                          ) AS t ON t.log_activity_id=log_act.id
                 ) AS shopping_categories ON blogs.log_id=shopping_categories.id
-                        LIMIT 5000;";
+                )        LIMIT 5000;";
 
         $columns = [
             'log_id', 'site_item_id', 'site_id', 'created_at_log_activity', 'published_up', 'published_down',

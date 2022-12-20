@@ -22,8 +22,8 @@ class SyncStoresBiJob
         stores.site_session_id, stores.visitor_id, stores.visitor_cookie,
         gender, dob, city, state, country, activity_type_id, weight, record_type,
         stores.item_pseudo_model, referrer_type, referrer_name, site_id, stores.store, shopping_categories.shopping_category
-FROM
-     (SELECT log_act.log_id, log_act.created_at_log_activity, scroll_percentage, latest_scroll_at, session_cookie,
+    FROM
+     ((SELECT log_act.log_id, log_act.created_at_log_activity, scroll_percentage, latest_scroll_at, session_cookie,
              log_act.site_session_id, log_act.visitor_id, v.visitor_cookie,
              gender, dob, city, state, country, activity_type_id, act.weight, record_type, it.pseudo_model AS item_pseudo_model, referrer_type, referrer_name, log_act.site_id, t.name AS store
         FROM (SELECT id AS log_id, created_at AS created_at_log_activity, scroll_percentage, latest_scroll_at, session_cookie,
@@ -63,7 +63,7 @@ FROM
                                         JOIN goldenha_cdp.log_activity_tag ON log_activity_tag.tag_id = tag.id
                                   ) AS t ON t.log_activity_id=log_act.id
                         ) AS shopping_categories ON stores.log_id=shopping_categories.id
-        LIMIT 5000;";
+      )  LIMIT 5000;";
 
         $columns = [
             'log_id', 'created_at_log_activity', 'scroll_percentage', 'latest_scroll_at', 'session_cookie',
