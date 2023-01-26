@@ -29,7 +29,8 @@ class SyncBrandsBiJob
         FROM (SELECT id AS log_id, created_at AS created_at_log_activity, scroll_percentage, latest_scroll_at, session_cookie,
                      site_session_id, visitor_id, activity_type_id, record_type, record_id, site_id, first_http_referrer_id
               FROM goldenha_cdp.log_activities
-              WHERE log_activities.url NOT LIKE '%house-of-style%' AND log_activities.id > " . $maxLogActivityId . "
+              WHERE log_activities.url NOT LIKE '%house-of-style%' AND log_activities.id > " . $maxLogActivityId . "  ORDER BY log_activities.id
+          LIMIT 1500
               ) AS log_act
             JOIN (SELECT id, visitors.visitor_cookie, gender, dob, city, state, country
                  FROM goldenha_cdp.visitors
@@ -59,7 +60,7 @@ class SyncBrandsBiJob
                                         JOIN goldenha_cdp.log_activity_tag ON log_activity_tag.tag_id = tag.id
                                   ) AS t ON t.log_activity_id=log_act.id
                         ) AS shopping_categories ON brands.log_id=shopping_categories.id
-         )                       LIMIT 5000;";
+         );";
 
         $columns = [
             'log_id', 'created_at_log_activity', 'scroll_percentage', 'latest_scroll_at', 'session_cookie',
