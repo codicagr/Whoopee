@@ -14,7 +14,7 @@ class SyncBlogsEnabledBiJob
 
     public function handle()
     {
-        $blogs = Item::where('pseudo_model', 'HouseOfStyle')->get();
+        $blogs = Item::where('pseudo_model', 'HosStory')->get();
         foreach($blogs as $blog) {
             DB::connection('mysql_bi')->table('blogs_enabled')->updateOrInsert(
                 [
