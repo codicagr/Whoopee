@@ -43,8 +43,8 @@ class SyncWebBehavioralJob
             'weight_activity', 'record_type', 'item_pseudo_model', 'referrer_type', 'referrer_name', 'search_phrase'
         ];
 
-       DB::connection('mysql_bi')->table('web_behavioral')->insertUsing($columns, $query);
+        DB::connection('mysql_bi')->table('web_behavioral')->insertUsing($columns, $query);
 
-        Log::channel('jobs')->info('Sync Web Behavioral finished.');
+        Log::channel('jobs')->info('[Bi]: Sync Web Behavioral finished.');
     }
 }

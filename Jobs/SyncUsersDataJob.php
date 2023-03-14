@@ -28,6 +28,6 @@ class SyncUsersDataJob
 
         DB::connection('mysql_bi')->table('users_data')->insertUsing($columns, $query);
 
-        Log::channel('jobs')->info('Sync Users Data finished.');
+        Log::channel('jobs')->info('[Bi]: Sync Users Data finished.');
     }
 }
