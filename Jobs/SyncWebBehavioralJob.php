@@ -14,9 +14,10 @@ class SyncWebBehavioralJob
             $maxLogActivityId = 0;
         }
 
-        $query = "SELECT log_id, created_at_log_activity, week(created_at_log_activity, 1),
-       scroll_percentage, latest_scroll_at,  url, session_cookie, site_session_id, activity_type_id, act.weight,
-       log_act.site_id, visitor_id, visitor_cookie, site_user_id, created_at_visitors, deleted_at_visitors, record_type, item_pseudo_model, referrer_type, referrer_name, search_phrase
+        $query = "SELECT log_id, created_at_log_activity, week(created_at_log_activity, 1), scroll_percentage,
+        latest_scroll_at,  url, session_cookie, site_session_id, activity_type_id, act.weight,
+       log_act.site_id, visitor_id, visitor_cookie, site_user_id, created_at_visitors,
+       deleted_at_visitors, record_type, item_pseudo_model, referrer_type, referrer_name, search_phrase
         FROM (SELECT id AS log_id, created_at AS created_at_log_activity, scroll_percentage, latest_scroll_at, session_cookie,
                      site_session_id, visitor_id, activity_type_id, record_type, record_id, site_id, first_http_referrer_id, search_phrase, url
           FROM goldenha_cdp.log_activities
@@ -38,13 +39,12 @@ class SyncWebBehavioralJob
 
         $columns = [
             'log_id', 'created_at_log_activity', 'week_created_at_log_activity', 'scroll_percentage',
-            'latest_scroll_at',  'url', 'session_cookie', 'site_session_id', 'visitor_id', 'visitor_cookie',
-            'site_user_id', 'created_at_visitors', 'deleted_at_visitors', 'site_id', 'activity_type_id',
-            'weight_activity', 'record_type', 'item_pseudo_model', 'referrer_type', 'referrer_name', 'search_phrase'
+            'latest_scroll_at',  'url', 'session_cookie', 'site_session_id', 'activity_type_id', 'weight_activity',
+            'site_id', 'visitor_id', 'visitor_cookie', 'site_user_id', 'created_at_visitors',
+             'deleted_at_visitors', 'record_type', 'item_pseudo_model', 'referrer_type', 'referrer_name', 'search_phrase'
         ];
 
-        DB::connection('mysql_bi')->table('web_behavioral')->insertUsing($columns, $query);
-
-        Log::channel('jobs')->info('[Bi]: Sync Web Behavioral finished.');
+       DB::connection('mysql_bi')->table('web_behavioral')->insertUsing($columns, $query);
+       Log::channel('jobs')->info('[Bi]: Sync Web Behavioral finished.');
     }
 }
