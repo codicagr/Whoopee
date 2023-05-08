@@ -64,7 +64,7 @@ class SyncStoresJob
                                         JOIN goldenha_cdp.log_activity_tag ON log_activity_tag.tag_id = tag.id
                                   ) AS t ON t.log_activity_id=log_act.id
                         ) AS shopping_categories ON stores.log_id=shopping_categories.id
-      )  LIMIT 5000;";
+      );";
 
         $columns = [
             'log_id', 'created_at_log_activity', 'scroll_percentage', 'latest_scroll_at', 'session_cookie',

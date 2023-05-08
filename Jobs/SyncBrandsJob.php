@@ -31,7 +31,7 @@ class SyncBrandsJob
                      site_session_id, visitor_id, activity_type_id, record_type, record_id, site_id, first_http_referrer_id
               FROM goldenha_cdp.log_activities
               WHERE log_activities.url NOT LIKE '%house-of-style%' AND log_activities.id > " . $maxLogActivityId . "  ORDER BY log_activities.id
-          LIMIT 2500
+
               ) AS log_act
             JOIN (SELECT id, visitors.visitor_cookie, gender, dob, city, state, country
                  FROM goldenha_cdp.visitors

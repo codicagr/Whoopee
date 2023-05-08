@@ -23,7 +23,6 @@ class SyncWebBehavioralJob
                      site_session_id, visitor_id, activity_type_id, record_type, record_id, site_id, first_http_referrer_id, search_phrase, url, utm_id
             FROM goldenha_cdp.log_activities
             WHERE deleted_at is null and id > ".$maxLogActivityId."
-            LIMIT 1000
             ) AS log_act
         JOIN (SELECT id, visitors.visitor_cookie, site_id, site_user_id, created_at as created_at_visitors, deleted_at as deleted_at_visitors
             FROM goldenha_cdp.visitors

@@ -47,7 +47,7 @@ class SyncCategoriesJob
             LEFT JOIN (SELECT id, referrer_type, referrer_name
                       FROM goldenha_cdp.http_referrers
                       ) AS http_ref ON log_act.first_http_referrer_id = http_ref.id
-           )                   LIMIT 5000;";
+           );";
 
         $columns = [
             'log_id', 'created_at_log_activity', 'scroll_percentage', 'latest_scroll_at', 'session_cookie',

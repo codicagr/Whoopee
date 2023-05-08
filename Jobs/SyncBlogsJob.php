@@ -32,7 +32,7 @@ FROM
     FROM (SELECT id AS log_id, created_at AS created_at_log_activity, scroll_percentage, latest_scroll_at, session_cookie,
                  site_session_id, visitor_id, activity_type_id, record_type, record_id, site_id, first_http_referrer_id, url
           FROM goldenha_cdp.log_activities WHERE log_activities.id > " . $maxLogActivityId . "  ORDER BY log_activities.id
-          LIMIT 5000
+
         ) AS log_act
         JOIN (SELECT id, visitors.visitor_cookie, gender, dob, city, state, country
              FROM goldenha_cdp.visitors
