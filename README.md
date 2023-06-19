@@ -14,6 +14,9 @@
 - SyncUsersDataJob στον πίνακα `users_data` (εδώ δεν κοιταμε το log_id, γίνεται καυτευθείαν inser or update στα αντίστοιχα)
 - SyncWebBehavioralJob στον πίνακα `web_behavioral`
 
+#### SyncAttributionInputJob
+Incrementally refresh table `attribution_input` for 3 different conversion types blog_visit, engaged_visit, sign-up.
+
 <br> 
 
-Σημ: όλα τα jobs τρέχουν 4 φορές την μέρα (07:30-08:00,  11:30-12:00,  15:30-16:00,  23:30-00:00)
+Σημ: όλα τα jobs τρέχουν 4 φορές την μέρα (07:30-08:10,  11:30-12:10,  15:30-16:10,  23:30-00:10)
