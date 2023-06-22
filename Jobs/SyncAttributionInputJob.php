@@ -141,7 +141,7 @@ class SyncAttributionInputJob
                    when touchpoints.referrer_type='website' then 3
                    when touchpoints.referrer_type='campaign' then 6
                    when touchpoints.referrer_type='social_media' then 7
-                   when touchpoints.referrer_type is null then null
+                   when touchpoints.referrer_type is null then 8
                    else 8
                 end as referer_type,
                touchpoints.referrer_name,
