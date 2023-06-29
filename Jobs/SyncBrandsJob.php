@@ -41,10 +41,10 @@ class SyncBrandsJob
                         JOIN goldenha_cdp.log_activity_tag ON log_activity_tag.tag_id = tags.id
                   WHERE tags.tag_category_id=3
                   ) AS t ON t.log_activity_id=log_act.log_id
-            JOIN (SELECT DISTINCT id, site_item_id, pseudo_model, site_id
+            JOIN (SELECT id, site_item_id, pseudo_model
                   FROM goldenha_cdp.items
                   WHERE items.pseudo_model='Product' OR items.pseudo_model='Store' OR items.pseudo_model='Brand'
-                  ) AS it ON log_act.record_id = it.id AND log_act.record_type LIKE '%Item' AND it.site_id=log_act.site_id
+                  ) AS it ON log_act.record_id = it.id AND log_act.record_type LIKE '%Item'
             JOIN (SELECT id, weight
                  FROM goldenha_cdp.activity_types
                  WHERE id!=6
