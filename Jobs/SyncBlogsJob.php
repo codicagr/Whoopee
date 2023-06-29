@@ -37,10 +37,10 @@ FROM
         JOIN (SELECT id, visitors.visitor_cookie, gender, dob, city, state, country
              FROM goldenha_cdp.visitors
              ) AS v ON log_act.visitor_id=v.id
-        JOIN (SELECT DISTINCT id, site_item_id, pseudo_model, published_up, published_down, alias, site_id
+        JOIN (SELECT id, site_item_id, pseudo_model, published_up, published_down, alias
               FROM goldenha_cdp.items
-              WHERE pseudo_model='HosStory'
-              ) AS it ON log_act.record_id = it.id AND log_act.record_type LIKE '%Item' AND it.site_id=log_act.site_id
+              WHERE pseudo_model='HosStory' OR pseudo_model='Story'
+              ) AS it ON log_act.record_id = it.id AND log_act.record_type LIKE '%Item'
         JOIN (SELECT id, weight
              FROM goldenha_cdp.activity_types
              ) AS act ON log_act.activity_type_id = act.id

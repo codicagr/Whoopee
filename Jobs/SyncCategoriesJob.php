@@ -36,10 +36,10 @@ class SyncCategoriesJob
                         JOIN goldenha_cdp.log_activity_tag ON goldenha_cdp.log_activity_tag.tag_id = tags.id
                   WHERE tags.tag_category_id=2
                   ) AS t ON t.log_activity_id=log_act.log_id
-            JOIN (SELECT DISTINCT id, site_item_id, pseudo_model, site_id
+            JOIN (SELECT id, site_item_id, pseudo_model
                   FROM goldenha_cdp.items
-                  WHERE items.pseudo_model!='HosStory'
-                  ) AS it ON log_act.record_id = it.id AND log_act.record_type LIKE '%Item' AND it.site_id=log_act.site_id
+                  WHERE items.pseudo_model!='HosStory' and items.pseudo_model!='Story'
+                  ) AS it ON log_act.record_id = it.id AND log_act.record_type LIKE '%Item'
             JOIN (SELECT id, weight
                  FROM goldenha_cdp.activity_types
                  WHERE id!=6
