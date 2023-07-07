@@ -15,12 +15,12 @@ class SyncAttributionInputJob
         $insert = $this->getPartialInsert($operator)."
         from
             (select first_http_referrer_id, utm_id, l.session_cookie, visitor_cookie, l.created_at, max_log_id,
-                    referrer_type, referrer_name, campaign, source, u.medium, u.add_group_id
+                    referrer_type, referrer_name, campaign, source, u.medium, u.add_group_id, site_id
                 from (select log_activities.id, log_activities.session_cookie, v.visitor_cookie,
-                         max(log_activities.id) as max_log_id, log_activities.created_at, first_http_referrer_id, utm_id
+                         max(log_activities.id) as max_log_id, log_activities.created_at, first_http_referrer_id, utm_id, log_activities.site_id
                     from goldenha_cdp.log_activities
                         join visitors v on log_activities.visitor_id = v.id
-                    where visitor_cookie is not null and session_cookie is not null and log_activities.site_id=1
+                    where visitor_cookie is not null and session_cookie is not null 
                             and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                     group by log_activities.session_cookie) l
                     left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
@@ -31,8 +31,8 @@ class SyncAttributionInputJob
             from goldenha_cdp.log_activities
                 join visitors v on log_activities.visitor_id = v.id
                 join items i on log_activities.record_id = i.id and log_activities.record_type LIKE '%Item'
-            where visitor_cookie is not null and session_cookie is not null and i.pseudo_model='HosStory'
-              and log_activities.site_id=1 and log_activities.deleted_at is null and v.deleted_at is null
+            where visitor_cookie is not null and session_cookie is not null and i.pseudo_model in ('HosStory', 'Story')
+               and log_activities.deleted_at is null and v.deleted_at is null
             group by log_activities.session_cookie
             ) as conversions on conversions.session_cookie=touchpoints.session_cookie;";
 
@@ -49,12 +49,12 @@ class SyncAttributionInputJob
         $insert = $this->getPartialInsert($operator)."
         from
             (select first_http_referrer_id, utm_id, l.session_cookie, visitor_cookie, l.created_at, max_log_id,
-                    referrer_type, referrer_name, campaign, source, u.medium, u.add_group_id
+                    referrer_type, referrer_name, campaign, source, u.medium, u.add_group_id, site_id
                 from (select log_activities.id, log_activities.session_cookie, v.visitor_cookie,
-                             max(log_activities.id) as max_log_id, log_activities.created_at, first_http_referrer_id, utm_id
+                             max(log_activities.id) as max_log_id, log_activities.created_at, first_http_referrer_id, utm_id, log_activities.site_id
                         from goldenha_cdp.log_activities
                             join visitors v on log_activities.visitor_id = v.id
-                        where visitor_cookie is not null and session_cookie is not null and log_activities.site_id=1
+                        where visitor_cookie is not null and session_cookie is not null 
                                 and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                         group by log_activities.session_cookie) l
                         left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
@@ -65,8 +65,8 @@ class SyncAttributionInputJob
                 from goldenha_cdp.log_activities
                     join visitors v on log_activities.visitor_id = v.id
                     join items i on log_activities.record_id = i.id and log_activities.record_type LIKE '%Item'
-                where visitor_cookie is not null and session_cookie is not null and i.pseudo_model in ('HosStory', 'Product')
-                  and log_activities.site_id=1 and log_activities.deleted_at is null and v.deleted_at is null
+                where visitor_cookie is not null and session_cookie is not null and i.pseudo_model in ('HosStory', 'Story', 'Product')
+                   and log_activities.deleted_at is null and v.deleted_at is null
                 group by log_activities.session_cookie
                 ) as conversions on conversions.session_cookie=touchpoints.session_cookie;";
 
@@ -82,13 +82,13 @@ class SyncAttributionInputJob
 
         $insert = $this->getPartialInsert($operator)."
         from
-            (select first_http_referrer_id, utm_id, l.session_cookie, visitor_cookie, l.created_at,
-                    referrer_type, referrer_name, campaign, source, u.medium, u.add_group_id, max_log_id
+            (select first_http_referrer_id, utm_id, l.session_cookie, visitor_cookie, l.created_at, max_log_id,
+                    referrer_type, referrer_name, campaign, source, u.medium, u.add_group_id, site_id
                 from (select log_activities.id, log_activities.session_cookie, v.visitor_cookie, log_activities.created_at,
-                             first_http_referrer_id, utm_id, max(log_activities.id) as max_log_id
+                             first_http_referrer_id, utm_id, max(log_activities.id) as max_log_id, log_activities.site_id
                         from goldenha_cdp.log_activities
                             join visitors v on log_activities.visitor_id = v.id
-                        where visitor_cookie is not null and session_cookie is not null and log_activities.site_id=1
+                        where visitor_cookie is not null and session_cookie is not null 
                             and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                         group by log_activities.session_cookie) l
                         left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
@@ -98,7 +98,7 @@ class SyncAttributionInputJob
                 select log_activities.session_cookie, v.visitor_cookie, log_activities.id as conversion_id
                 from goldenha_cdp.log_activities
                     join visitors v on log_activities.visitor_id = v.id
-                where visitor_cookie is not null and session_cookie is not null and log_activities.site_id=1 and activity_type_id = 3 and log_activities.deleted_at is null and v.deleted_at is null
+                where visitor_cookie is not null and session_cookie is not null  and activity_type_id = 3 and log_activities.deleted_at is null and v.deleted_at is null
                 group by session_cookie
                 ) as conversions on conversions.session_cookie=touchpoints.session_cookie;";
 
@@ -124,7 +124,7 @@ class SyncAttributionInputJob
     {
         return "
         insert ignore into goldenhall_bi.attribution_input(idvisitor, idvisit, touchpoint_id, touchpoint_time, conversion_type,
-                conversion_id, campaign_source, campaign_medium, campaign_name, referer_type, referer_name, campaign_adgroup)
+                conversion_id, campaign_source, campaign_medium, campaign_name, referer_type, referer_name, campaign_adgroup, site_id)
         select
                touchpoints.visitor_cookie,
                touchpoints.session_cookie,
@@ -145,7 +145,8 @@ class SyncAttributionInputJob
                    else 8
                 end as referer_type,
                touchpoints.referrer_name,
-               touchpoints.add_group_id";
+               touchpoints.add_group_id,
+               touchpoints.site_id";
     }
 
     private function getUpdateQuery(int $maxTouchpointId, string $operator): string
