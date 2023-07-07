@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Bi;
+namespace App\Jobs\WhoopeeBi;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +20,7 @@ class SyncAttributionInputJob
                          max(log_activities.id) as max_log_id, log_activities.created_at, first_http_referrer_id, utm_id, log_activities.site_id
                     from goldenha_cdp.log_activities
                         join visitors v on log_activities.visitor_id = v.id
-                    where visitor_cookie is not null and session_cookie is not null 
+                    where visitor_cookie is not null and session_cookie is not null
                             and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                     group by log_activities.session_cookie) l
                     left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
@@ -54,7 +54,7 @@ class SyncAttributionInputJob
                              max(log_activities.id) as max_log_id, log_activities.created_at, first_http_referrer_id, utm_id, log_activities.site_id
                         from goldenha_cdp.log_activities
                             join visitors v on log_activities.visitor_id = v.id
-                        where visitor_cookie is not null and session_cookie is not null 
+                        where visitor_cookie is not null and session_cookie is not null
                                 and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                         group by log_activities.session_cookie) l
                         left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
@@ -88,7 +88,7 @@ class SyncAttributionInputJob
                              first_http_referrer_id, utm_id, max(log_activities.id) as max_log_id, log_activities.site_id
                         from goldenha_cdp.log_activities
                             join visitors v on log_activities.visitor_id = v.id
-                        where visitor_cookie is not null and session_cookie is not null 
+                        where visitor_cookie is not null and session_cookie is not null
                             and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                         group by log_activities.session_cookie) l
                         left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
