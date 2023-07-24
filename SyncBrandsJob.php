@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Jobs\WhoopeeBi;
 
 use Illuminate\Support\Facades\DB;

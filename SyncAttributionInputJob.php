@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Jobs\WhoopeeBi;
 
 use Illuminate\Support\Facades\DB;
@@ -20,7 +21,7 @@ class SyncAttributionInputJob
                          max(log_activities.id) as max_log_id, log_activities.created_at, first_http_referrer_id, utm_id, log_activities.site_id
                     from goldenha_cdp.log_activities
                         join visitors v on log_activities.visitor_id = v.id
-                    where visitor_cookie is not null and session_cookie is not null
+                        where visitor_cookie is not null and session_cookie is not null
                             and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                     group by log_activities.session_cookie) l
                     left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
@@ -34,6 +35,7 @@ class SyncAttributionInputJob
             where visitor_cookie is not null and session_cookie is not null and i.pseudo_model in ('HosStory', 'Story')
                and log_activities.deleted_at is null and v.deleted_at is null
             group by log_activities.session_cookie
+            having count(distinct log_activities.url) > 1
             ) as conversions on conversions.session_cookie=touchpoints.session_cookie;";
 
         DB::insert($insert);
@@ -54,7 +56,7 @@ class SyncAttributionInputJob
                              max(log_activities.id) as max_log_id, log_activities.created_at, first_http_referrer_id, utm_id, log_activities.site_id
                         from goldenha_cdp.log_activities
                             join visitors v on log_activities.visitor_id = v.id
-                        where visitor_cookie is not null and session_cookie is not null
+                        where visitor_cookie is not null and session_cookie is not null 
                                 and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                         group by log_activities.session_cookie) l
                         left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
@@ -68,6 +70,7 @@ class SyncAttributionInputJob
                 where visitor_cookie is not null and session_cookie is not null and i.pseudo_model in ('HosStory', 'Story', 'Product')
                    and log_activities.deleted_at is null and v.deleted_at is null
                 group by log_activities.session_cookie
+                having count(distinct log_activities.url) > 1
                 ) as conversions on conversions.session_cookie=touchpoints.session_cookie;";
 
         DB::insert($insert);
@@ -88,7 +91,7 @@ class SyncAttributionInputJob
                              first_http_referrer_id, utm_id, max(log_activities.id) as max_log_id, log_activities.site_id
                         from goldenha_cdp.log_activities
                             join visitors v on log_activities.visitor_id = v.id
-                        where visitor_cookie is not null and session_cookie is not null
+                        where visitor_cookie is not null and session_cookie is not null 
                             and log_activities.deleted_at is null and log_activities.id > " . $maxTouchpointId ."
                         group by log_activities.session_cookie) l
                         left join goldenha_cdp.http_referrers hr on l.first_http_referrer_id = hr.id
@@ -156,7 +159,7 @@ class SyncAttributionInputJob
         JOIN (
                 select distinct site_user_id, visitors.visitor_cookie
                 from goldenha_cdp.log_activities join visitors on log_activities.visitor_id = visitors.id
-                where log_activities.site_id=1 and log_activities.id > " . $maxTouchpointId ."
+                where log_activities.id > " . $maxTouchpointId ."
             ) vis ON goldenhall_bi.attribution_input.idvisitor = vis.visitor_cookie
         SET goldenhall_bi.attribution_input.client_id = vis.site_user_id, updated_at=CURRENT_TIMESTAMP
         WHERE vis.site_user_id is not null and goldenhall_bi.attribution_input.client_id is null and conversion_type='".$operator."';";
