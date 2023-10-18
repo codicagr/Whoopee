@@ -25,4 +25,6 @@ Incrementally refresh table `attribution_input` for 3 different conversion types
 
 <br> 
 
-Σημ: όλα τα jobs τρέχουν 4 φορές την μέρα (07:30-08:10,  11:30-12:10,  15:30-16:10,  23:30-00:10)
+Σημ:  
+Όλα τα jobs εκτος των SyncFollowsPerDayJob, SyncProductStatsPerDayJob τρέχουν 4 φορές την μέρα (07:30-08:10,  11:30-12:10,  15:30-16:10,  23:30-00:10).    
+Τα SyncFollowsPerDayJob, SyncProductStatsPerDayJob τρέχουν 1 φορές την μέρα 00:30 και 00:35 αντίστοιχα.
