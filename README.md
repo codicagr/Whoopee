@@ -5,14 +5,20 @@
 Για κάθε item του blog (HouseOfStyle) γίνεται insert στον πίνακα `blogs_enabled` (αν δεν υπάρχει ήδη)
 
 #### SyncBlogsJob, SyncBrandsJob, SyncCategoriesJob, SyncStoresJob, SyncUsersDataJob, SyncWebBehavioralJob
-Ακολουθείται ίδια λογική και στις 4 κλάσεις.<br> 
+Ακολουθείται ίδια λογική.<br> 
 Από τον πίνακα που κοιτάει η κλάση βλέπει το μέγιστο `log_id` και βάσει αυτού <br>εκτελείται το query που συγκεντρώνει πληροφορία από διάφορους πίνακες.
 - SyncBlogsJob στον πίνακα `blogs`
-- SyncBrandsJob στον πίνακα `brand_tags`
-- SyncCategoriesJob στον πίνακα `categories_tags`
-- SyncStoresJob στον πίνακα `store_tags`
-- SyncUsersDataJob στον πίνακα `users_data` (εδώ δεν κοιταμε το log_id, γίνεται καυτευθείαν inser or update στα αντίστοιχα)
-- SyncWebBehavioralJob στον πίνακα `web_behavioral`
+- SyncBrandsJob στον `brand_tags`
+- SyncCategoriesJob στον `categories_tags`
+- SyncStoresJob στον `store_tags`
+- SyncUsersDataJob στον `users_data` (εδώ δεν κοιταμε το log_id, γίνεται καυτευθείαν inser or update στα αντίστοιχα)
+- SyncWebBehavioralJob στον `web_behavioral`
+
+#### SyncFollowsPerDayJob, SyncProductStatsPerDayJob
+Εδώ δεν κοιταμε το μέγιστο `log_id`, γίνεται καυτευθείαν insert.  
+- SyncUsersDataJob στον `users_data`
+- SyncFollowsPerDayJob στον `follows_per_day`  
+- SyncProductStatsPerDayJob στον `product_stats_per_day`  
 
 #### SyncAttributionInputJob
 Incrementally refresh table `attribution_input` for 3 different conversion types blog_visit, engaged_visit, sign-up.
